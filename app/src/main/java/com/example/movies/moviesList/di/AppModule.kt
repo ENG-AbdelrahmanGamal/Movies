@@ -2,7 +2,7 @@ package com.example.movies.moviesList.di
 
 import android.app.Application
 import androidx.room.Room
-import com.example.movies.moviesList.data.local.movie.MovieDataBase
+import com.example.movies.moviesList.data.local.movie.MovieDatabase
 import com.example.movies.moviesList.data.remote.Api
 import dagger.Module
 import dagger.Provides
@@ -35,8 +35,8 @@ object AppModule {
     }
     @Provides
     @Singleton
-    fun provideMovieDatabase(application: Application):MovieDataBase{
-        return Room.databaseBuilder(application,MovieDataBase::class.java,"movie_database").build()
+    fun provideMovieDatabase(application: Application):MovieDatabase{
+        return Room.databaseBuilder(application,MovieDatabase::class.java,"movie_database").build()
     }
 
 

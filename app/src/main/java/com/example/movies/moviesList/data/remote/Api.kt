@@ -11,8 +11,8 @@ interface Api {
     @GET("movie/{category}")
     suspend fun getMoviesList(
         @Path("category") category: String,
-        @Query("page")page:Int,
-        @Query("Api_Key")apiKey:String=API_KEY
+        @Query("page") page:Int,
+        @Query("Api_Key") apiKey:String=API_KEY
     ):MovieListDataTransfer
 
     companion object{

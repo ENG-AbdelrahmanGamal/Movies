@@ -1,9 +1,8 @@
 package com.example.movies.moviesList.data.repository
 
+import android.graphics.Movie
 import android.net.http.HttpException
-import android.os.Build
-import androidx.annotation.RequiresExtension
-import com.example.movies.moviesList.data.local.movie.MovieDataBase
+import com.example.movies.moviesList.data.local.movie.MovieDatabase
 import com.example.movies.moviesList.data.mappers.toMovie
 import com.example.movies.moviesList.data.mappers.toMovieEntity
 import com.example.movies.moviesList.data.remote.Api
@@ -17,7 +16,7 @@ import javax.inject.Inject
 
 class MovieListRepositoryImpl @Inject constructor(
     private val movieApi: Api,
-    private val movieDataBase: MovieDataBase
+    private val movieDatabase: MovieDatabase
 ) : MovieListRepository {
 
     override suspend fun getMovieList(
@@ -26,41 +25,51 @@ class MovieListRepositoryImpl @Inject constructor(
         page: Int
     ): Flow<Resource<List<Movies>>> {
         return flow {
-            emit(Resource.Loading(true))
-            val localMovieList = movieDataBase.moviesDao.getListMoviesByCatigory(category)
-            val shouldLoadingLocalMovie = localMovieList.isNotEmpty() && !forceFetchFromRemote
 
-            if (shouldLoadingLocalMovie) {
-                emit(Resource.Success(data = localMovieList.map { movieEntity ->
-                    movieEntity.toMovie(category)
-                }))
+            emit(Resource.Loading(true))
+
+            val localMovieList = movieDatabase.moviesDao.getListMoviesByCatigory(category)
+
+            val shouldLoadLocalMovie = localMovieList.isNotEmpty() && !forceFetchFromRemote
+
+            if (shouldLoadLocalMovie) {
+                emit(Resource.Success(
+                    data = localMovieList.map { movieEntity ->
+                        movieEntity.toMovie(category)
+                    }
+                ))
+
                 emit(Resource.Loading(false))
                 return@flow
-
             }
+
             val movieListFromApi = try {
                 movieApi.getMoviesList(category, page)
             } catch (e: IOException) {
                 e.printStackTrace()
-                emit(Resource.Error(message = "ErrorIO Loading Movies"))
+                emit(Resource.Error(message = "Error loading movies"))
                 return@flow
             } catch (e: HttpException) {
                 e.printStackTrace()
-                emit(Resource.Error(message = "ErrorHttp Loading Movies"))
+                emit(Resource.Error(message = "Error loading movies"))
                 return@flow
             } catch (e: Exception) {
                 e.printStackTrace()
-                emit(Resource.Error(message = "Error Loading Movies"))
+                emit(Resource.Error(message = "Error loading movies"))
                 return@flow
-
             }
-            val MovieEntities = movieListFromApi.results.let {
-                it.map { movieTransfer ->
-                    movieTransfer.toMovieEntity(category)
+
+            val movieEntities = movieListFromApi.results.let {
+                it.map { movieDto ->
+                    movieDto.toMovieEntity(category)
                 }
             }
-            movieDataBase.moviesDao.upsertMovies(MovieEntities)
-            emit(Resource.Success(MovieEntities.map { movieEntity -> movieEntity.toMovie(category) }))
+
+            movieDatabase.moviesDao.upsertMovies(movieEntities)
+
+            emit(Resource.Success(
+                movieEntities.map { it.toMovie(category) }
+            ))
             emit(Resource.Loading(false))
 
         }
@@ -68,14 +77,24 @@ class MovieListRepositoryImpl @Inject constructor(
 
     override suspend fun getMovie(id: Int): Flow<Resource<Movies>> {
         return flow {
+
             emit(Resource.Loading(true))
-            val movieEntity = movieDataBase.moviesDao.getListMoviesById(id)
+
+            val movieEntity = movieDatabase.moviesDao.getListMoviesById(id)
+
             if (movieEntity != null) {
-                emit(Resource.Success(movieEntity.toMovie(movieEntity.category)))
+                emit(
+                    Resource.Success(movieEntity.toMovie(movieEntity.category))
+                )
+
                 emit(Resource.Loading(false))
                 return@flow
             }
-            emit(Resource.Error("Error such Movie"))
+
+            emit(Resource.Error("Error no such movie"))
+
+            emit(Resource.Loading(false))
+
 
         }
     }
