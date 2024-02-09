@@ -12,12 +12,15 @@ interface Api {
     suspend fun getMoviesList(
         @Path("category") category: String,
         @Query("page") page:Int,
-        @Query("Api_Key") apiKey:String=API_KEY
+        @Query("api_key") api_key:String=API_KEY
+
     ):MovieListDataTransfer
 
     companion object{
+
         const val BASE_URL="https://api.themoviedb.org/3/"
-        const val IMAGE_BASE_URL="/cnqwv5Uz3UW5f086IWbQKr3ksJr"
+
+        const val IMAGE_BASE_URL="/A7EByudX0eOzlkQ2FIbogzyazm2"
         const val API_KEY="abaca52e53f445dd59c758dae5fdfbea"
     }
 

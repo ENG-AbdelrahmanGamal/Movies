@@ -18,7 +18,4 @@ abstract class RepoModule {
     abstract fun provideMovieListRepository(movieListRepositoryImpl: MovieListRepositoryImpl):
             MovieListRepository
 
-
-
-
 }

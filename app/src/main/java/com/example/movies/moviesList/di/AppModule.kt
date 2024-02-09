@@ -1,6 +1,7 @@
 package com.example.movies.moviesList.di
 
 import android.app.Application
+import android.app.VoiceInteractor
 import androidx.room.Room
 import com.example.movies.moviesList.data.local.movie.MovieDatabase
 import com.example.movies.moviesList.data.remote.Api
@@ -24,18 +25,30 @@ object AppModule {
         level=HttpLoggingInterceptor.Level.BODY
     }
 
-    private val client:OkHttpClient=OkHttpClient.Builder().addInterceptor(interceptor).build()
+    private val client: OkHttpClient =OkHttpClient.Builder().addInterceptor(interceptor).build()
     @Provides
     @Singleton
-    fun provideMovieApi():Api
+    fun provideMovieApi(): Api
     {
-        return Retrofit.Builder().baseUrl(Api.BASE_URL).client(client)
+        return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
-            .build().create(Api::class.java)
+            .baseUrl(Api.BASE_URL)
+            .client(client)
+            .build()
+            .create(Api::class.java)
     }
+
+//    val request = VoiceInteractor.Request.Builder()
+//        .url("https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1")
+//        .get()
+//        .addHeader("accept", "application/json")
+//        .addHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhYmFjYTUyZTUzZjQ0NWRkNTljNzU4ZGFlNWZkZmJlYSIsInN1YiI6IjY1YmExYTBlNWJlMDBlMDE2MTVhZjk0OCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.YUZARvxV8HYIspGiJtxcT4_u6AqFEEpgY-KQJWjdlSY")
+//        .build()
+
+//    val response = client.newCall(request).execute()
     @Provides
     @Singleton
-    fun provideMovieDatabase(application: Application):MovieDatabase{
+    fun provideMovieDatabase(application: Application): MovieDatabase {
         return Room.databaseBuilder(application,MovieDatabase::class.java,"movie_database").build()
     }
 
