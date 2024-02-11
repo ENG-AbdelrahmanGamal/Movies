@@ -4,4 +4,6 @@
     <string name="upcoming">upComing</string>
     <string name="popular_movies">popular Movies</string>
     <string name="upcoming_movies">" upcoming movies"</string>
+    <string name="release_date">"Release Date "</string>
+    <string name="overview">"OverView "</string>
 </resources>

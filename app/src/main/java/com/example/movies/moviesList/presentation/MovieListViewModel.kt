@@ -87,7 +87,8 @@ class MovieListViewModel @Inject constructor(
         viewModelScope.launch {
             _movieListState.update { it.copy(isLoading = true) }
             movieListRepository.getMovieList(
-                forceFetchFromRemote, Category.POPULAR,
+                forceFetchFromRemote,
+                Category.POPULAR,
                 movieListState.value.popualrMovieListPage
             ).collectLatest { result ->
                 when (result) {

@@ -1,6 +1,7 @@
 package com.example.movies.moviesList.core
 
 import android.graphics.Movie
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -46,7 +48,7 @@ import com.example.movies.moviesList.domain.model.Movies
 import com.example.movies.moviesList.util.RatingBar
 import com.example.movies.moviesList.util.Screen
 import com.example.movies.moviesList.util.getAvarageColor
-import okhttp3.internal.wait
+
 
 @Composable
 fun MovieItem(
@@ -55,13 +57,17 @@ fun MovieItem(
 
 )
 {
-val imageState= rememberAsyncImagePainter(
-    model =ImageRequest.Builder(LocalContext.current)
-        .data(Api.IMAGE_BASE_URL+movie.backdrop_path).size(Size.ORIGINAL).build()
-).state
-    val defaultColor= MaterialTheme.colorScheme.secondaryContainer
-    var dominantColor by remember{ mutableStateOf(defaultColor) }
-
+    val imageState = rememberAsyncImagePainter(
+        model = ImageRequest.Builder(LocalContext.current)
+            .data(Api.IMAGE_BASE_URL + movie.backdrop_path)
+            .size(Size.ORIGINAL)
+            .build()
+    ).state
+    Log.i("TAaaaaaaaaG", "MovieItem: "+imageState)
+    val defaultColor = MaterialTheme.colorScheme.secondaryContainer
+    var dominantColor by remember {
+        mutableStateOf(defaultColor)
+    }
 Column (
     modifier = Modifier
         .wrapContentHeight()
@@ -78,41 +84,43 @@ Column (
             )
         )
         .clickable {
-            navHostController.navigate(Screen.Details.route + "/${movie.id}")
+            navHostController.navigate(Screen.Details.route+ "/${movie.id}")
         }
 ){
-    if(imageState is AsyncImagePainter.State.Error){
-        Box (
+    if (imageState is AsyncImagePainter.State.Error) {
+        Box(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxWidth()
                 .padding(6.dp)
                 .height(250.dp)
                 .clip(RoundedCornerShape(22.dp))
-                .background(MaterialTheme.colorScheme.primaryContainer), contentAlignment = Alignment.Center
-
-        ){
-            Icon(imageVector = Icons.Rounded.ImageNotSupported,
-                 contentDescription = movie.title)
-
+                .background(MaterialTheme.colorScheme.primaryContainer),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                modifier = Modifier.size(70.dp),
+                imageVector = Icons.Rounded.ImageNotSupported,
+                contentDescription = movie.title
+            )
         }
     }
-    if(imageState is AsyncImagePainter.State.Success){
+    if (imageState is AsyncImagePainter.State.Success) {
+        dominantColor =getAvarageColor(
+            imageBitmap = imageState.result.drawable.toBitmap().asImageBitmap()
+        )
 
-
-      dominantColor= getAvarageColor(
-          imageBitmap = imageState.result.drawable.toBitmap().asImageBitmap()
-      )
-          Image(
-              modifier = Modifier
-                  .fillMaxSize()
-                  .padding(6.dp)
-                  .height(250.dp)
-                  .clip(RoundedCornerShape(22.dp)),
-              painter = imageState.painter,
-              contentDescription = movie.title,
-              contentScale = ContentScale.Crop
-          )
+        Image(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(6.dp)
+                .height(250.dp)
+                .clip(RoundedCornerShape(22.dp)),
+            painter = imageState.painter,
+            contentDescription = movie.title,
+            contentScale = ContentScale.Crop
+        )
     }
+
     Spacer(modifier = Modifier.height(6.dp))
     Text(
         modifier= Modifier.padding(start = 6.dp, end = 8.dp) ,

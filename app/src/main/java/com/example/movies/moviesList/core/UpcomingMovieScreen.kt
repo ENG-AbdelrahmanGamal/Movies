@@ -51,7 +51,7 @@ CircularProgressIndicator()
 
                 if(index>=movieListState.upcomingMovieList.size -1&& ! movieListState.isLoading)
                 {
-                    onEvent(MovieListUIEvent.Paginate(com.example.movies.moviesList.util.Category.POPULAR))
+                    onEvent(MovieListUIEvent.Paginate(com.example.movies.moviesList.util.Category.UPCOMING))
 
                 }
             }
