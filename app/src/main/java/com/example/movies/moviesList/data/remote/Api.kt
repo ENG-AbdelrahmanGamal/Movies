@@ -23,6 +23,7 @@ interface Api {
 
         const val BASE_URL="https://api.themoviedb.org/3/"
         const val IMAGE_BASE_URL="https://image.tmdb.org/t/p/w500"
+        //protect API KEY and push to github
          val API_KEY=BuildConfig.API_KEY
     }
 
