@@ -3,6 +3,7 @@ package com.example.movies.moviesList.di
 import android.app.Application
 import android.app.VoiceInteractor
 import androidx.room.Room
+import androidx.room.TypeConverter
 import com.example.movies.moviesList.data.local.movie.MovieDatabase
 import com.example.movies.moviesList.data.remote.Api
 import dagger.Module
@@ -46,6 +47,7 @@ object AppModule {
 //        .build()
 
 //    val response = client.newCall(request).execute()
+
     @Provides
     @Singleton
     fun provideMovieDatabase(application: Application): MovieDatabase {

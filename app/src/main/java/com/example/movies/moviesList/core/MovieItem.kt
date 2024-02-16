@@ -35,6 +35,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.drawable.toBitmap
@@ -63,7 +64,6 @@ fun MovieItem(
             .size(Size.ORIGINAL)
             .build()
     ).state
-    Log.i("TAaaaaaaaaG", "MovieItem: "+imageState)
     val defaultColor = MaterialTheme.colorScheme.secondaryContainer
     var dominantColor by remember {
         mutableStateOf(defaultColor)

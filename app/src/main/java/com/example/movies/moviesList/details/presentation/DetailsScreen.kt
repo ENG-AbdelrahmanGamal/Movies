@@ -187,9 +187,6 @@ fun DetailsSCreen() {
                             text = move.vote_count.toString()+ " Votes"
                         )
                     }
-
-
-
             }
 
 

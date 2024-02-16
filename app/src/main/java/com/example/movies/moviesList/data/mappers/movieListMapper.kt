@@ -1,9 +1,9 @@
 package com.example.movies.moviesList.data.mappers
 
+import androidx.room.TypeConverter
 import com.example.movies.moviesList.data.local.movie.MovieEntity
 import com.example.movies.moviesList.data.remote.responses.responseMovieList.MovieListTransfer
 import com.example.movies.moviesList.domain.model.Movies
-
 
 fun MovieListTransfer.toMovieEntity(category: String):MovieEntity{
     return MovieEntity (
@@ -29,11 +29,7 @@ fun MovieListTransfer.toMovieEntity(category: String):MovieEntity{
             "-1,-2"
         }
     )
-
 }
-
-
-
 fun MovieEntity.toMovie(category: String):Movies{
     return Movies(
         backdrop_path = backdrop_path,
@@ -49,13 +45,16 @@ fun MovieEntity.toMovie(category: String):Movies{
         id = id,
         adult = adult,
         original_title = original_title,
-
         category = category,
-
         genre_ids = try {
             genre_ids.split(",").map { it.toInt() }
         } catch (e: Exception) {
             listOf(-1, -2)
         }
     )
+
+
+
+
+
 }
