@@ -1,7 +1,8 @@
+# The Movies Info app
 The Movies Info app, is a dynamic application designed with cutting-edge technologies, including Jetpack Compose and Kotlin. This project follows to clean code principles, thanks to the clarity and maintainability they bring. The application is built with the Model-View-ViewModel (MVVM) design pattern, which promotes a stable and scalable codebase. Additionally, Dagger Hilt is used for efficient dependency injection, which improves modularity and testability.
 
 
-#Key Features
+# Key Features
 
     -Jetpack Compose: The app leverages Jetpack Compose, a modern Android UI toolkit, to create a seamless and interactive user experience.
     -Kotlin: Developed entirely in Kotlin, the codebase benefits from the conciseness and expressiveness of the language, promoting efficient and readable code.
@@ -11,9 +12,8 @@ The Movies Info app, is a dynamic application designed with cutting-edge technol
     -Room: Room is used for local data storage, providing a reliable and efficient way to manage app-related data.
     -Offline Capability: This is a first offline app, ensuring users best possible experience even without an active internet connection.
 
-    # Image form the Application
-    
-    
+# Image form the Application
+
 ![Screenshot from 2024-02-12 04-11-07](https://github.com/ENG-AbdelrahmanGamal/Movies/assets/75239634/504a147e-2e53-4f11-9725-5e8d5d5d77ec)
 ![Screenshot from 2024-02-12 04-11-42](https://github.com/ENG-AbdelrahmanGamal/Movies/assets/75239634/70cb377e-5845-4acc-b63c-4eaa58831704)
 ![Screenshot from 2024-02-12 04-11-54](https://github.com/ENG-AbdelrahmanGamal/Movies/assets/75239634/7b678568-f328-4459-83ec-5cbc4938b512)
